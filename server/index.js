@@ -1,24 +1,34 @@
 const express = require("express");
-const connectDB = require("./config/db");
+const mongoose = require("mongoose");
+const cors = require("cors");
 
 const app = express();
 
-// Connect to database
-connectDB();
-
-// Middleware to parse JSON
+/* ================= MIDDLEWARE ================= */
+app.use(cors());
 app.use(express.json());
 
-// Routes
-app.use("/api", require("./routes/StationRoutes"));
-
-// Test route
-app.get("/", (req, res) => {
-  res.send("EV Charging API running");
+app.use((req, res, next) => {
+  console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
+  next();
 });
 
-// Start server
+/* ================= MONGODB ================= */
+mongoose.connect("mongodb+srv://EV:lWjf6wci08IKxsMV@cluster0.7z0bvyk.mongodb.net/?appName=Cluster0")
+  .then(() => console.log("MongoDB connected"))
+  .catch(err => console.log(err));
+
+/* ================= ROUTES ================= */
+app.use("/api", require("./routes/StationRoutes"));
+
+/* ================= TEST ================= */
+app.get("/", (req, res) => {
+  res.send("API running");
+});
+
+/* ================= SERVER ================= */
 const PORT = 5000;
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
