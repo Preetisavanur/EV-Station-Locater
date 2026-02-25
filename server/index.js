@@ -8,11 +8,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use((req, res, next) => {
-  console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
-  next();
-});
-
 /* ================= MONGODB ================= */
 mongoose.connect("mongodb+srv://EV:lWjf6wci08IKxsMV@cluster0.7z0bvyk.mongodb.net/?appName=Cluster0")
   .then(() => console.log("MongoDB connected"))
@@ -20,6 +15,7 @@ mongoose.connect("mongodb+srv://EV:lWjf6wci08IKxsMV@cluster0.7z0bvyk.mongodb.net
 
 /* ================= ROUTES ================= */
 app.use("/api", require("./routes/StationRoutes"));
+app.use("/api/auth", require("./routes/AuthRoutes"));
 
 /* ================= TEST ================= */
 app.get("/", (req, res) => {

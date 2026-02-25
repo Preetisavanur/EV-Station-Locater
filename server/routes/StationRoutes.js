@@ -239,12 +239,10 @@ router.get("/route", async (req, res) => {
 
       // Use route-based distance instead of haversine
       const dist = calculateRouteDistance(routeCoords, s1._progress, s2._progress);
-      console.log(`Checking gap ${i}: ${s1.tags?.name} -> ${s2.tags?.name} = ${dist.toFixed(2)} km`);
 
       if (dist > SAFE_RANGE - BUFFER) {
         const extra = dist - (SAFE_RANGE - BUFFER);
         const minutes = Math.ceil((extra / 60) * 10);
-        console.log(`  ! WARNING ADDED: Gap is ${dist.toFixed(2)}km`);
         warnings.push({
           from: s1.tags?.name || "Station",
           to: s2.tags?.name || "Next Station",
